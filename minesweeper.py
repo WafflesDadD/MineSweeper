@@ -337,9 +337,6 @@ def mine_placing():
             board[y][x] = 9
         first = False
     
-    for i in range(boardY):
-        print(board[i])
-    print()
     number_tiles()
 
 
@@ -380,16 +377,12 @@ def number_tiles():
                         if board[i+1][j+1] == 9:
                             board[i][j] = (board[i][j] + 1)
     
-    for i in range(boardY):
-        print(board[i])
     
 
 def check_mine(col,row):
     global TR
     posX = (col) * TW
     posY = (row) * TH
-    print(col,row)
-    print(board[row][col])
     if isFlagged[row][col] == 0 or isFlagged[row][col] == 2:
         isFlagged[row][col] = 2
         if (board[row][col]) == 9:
@@ -505,7 +498,6 @@ def clear_empty(col,row):
     global TR
     clearedTiles = [(row,col)]
     NZclearedTiles = []
-    print(col,row)
     while True:
         length = len(clearedTiles)
         for i in clearedTiles:
@@ -567,8 +559,6 @@ def clear_empty(col,row):
             break
         
 
-    print(clearedTiles)
-    print(NZclearedTiles)
     for i in clearedTiles:
         if isChecked[i[0]][i[1]] == 0:
             isChecked[i[0]][i[1]] = 1
