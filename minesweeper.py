@@ -7,8 +7,8 @@ from pygame.locals import *
 won = False
 lost = False
 
-TW= 50
-TH= 50
+TW= 36
+TH= 36
 
 boardX=12
 boardY=12
@@ -47,6 +47,7 @@ win_screen = pg.transform.scale(win_screen, (300,400))
 
 tile_img = pg.image.load("tile_modified.png")
 flag_img = pg.image.load("flag_modified.png")
+false_flag_img = pg.image.load("false_flag.png")
 mine_img = pg.image.load("mine_modified.png")
 boom_img = pg.image.load("boom_modified.png")
 clear_img = pg.image.load("clear_tile_modified.png")
@@ -56,6 +57,7 @@ continue_img = pg.image.load("continue_tile.png")
 
 tile_img = pg.transform.scale(tile_img, (TW, TH))
 flag_img = pg.transform.scale(flag_img, (TW, TH))
+false_flag_img = pg.transform.scale(false_flag_img, (TW, TH))
 mine_img = pg.transform.scale(mine_img, (TW, TH))
 boom_img = pg.transform.scale(boom_img, (TW, TH))
 clear_img = pg.transform.scale(clear_img, (TW, TH))
@@ -122,19 +124,19 @@ def menu_screen():
                 pg.display.update()
              
         if easy:
-            boardX=16
-            boardY=12
-            mineCount=22
+            boardX=24
+            boardY=16
+            mineCount=45
             mode='Easy'
         elif mid:
-            boardX=18
-            boardY=14
-            mineCount=36
+            boardX=33
+            boardY=22
+            mineCount=110
             mode='Medium'
         elif hard:
-            boardX=20
-            boardY=16
-            mineCount=60
+            boardX=42
+            boardY=28
+            mineCount=200
             mode='Advanced'
             
         pg.display.update()
@@ -205,6 +207,19 @@ def win(): #needs work
                     go2 = False
         pg.display.update()
         CLOCK.tick(fps)
+
+
+
+def false_flag():
+    for i in range(boardY):
+        for j in range(boardX):
+            if isFlagged[i][j] == 1 and board[i][j] != 9 and board[i][j] != 0:
+                isFlagged[i][j] = 0
+                check_mine(j,i)
+                screen.blit(false_flag_img, (j*TW, i*TH))
+
+    pg.display.update()
+    lose()
 
 
 
@@ -387,7 +402,7 @@ def check_mine(col,row):
         isFlagged[row][col] = 2
         if (board[row][col]) == 9:
             screen.blit(boom_img, (posX, posY))
-            lose()
+            false_flag()
         elif (board[row][col]) == 0 and isChecked[row][col] == 0:
             isFlagged[row][col] = 2
             clear_empty(col,row)
@@ -425,7 +440,7 @@ def check_mine(col,row):
             screen.blit(tile8_img, (posX, posY))
             TR = TR-1
     elif isFlagged[row][col] == 1:
-        drawFlag(col,row)
+        draw_flag(col,row)
 
     pg.display.update()
     if TR == 0:
@@ -448,7 +463,7 @@ def check_mine2(NZclearedTiles):
             isFlagged[row][col] = 2
             if (board[row][col]) == 9:
                 screen.blit(boom_img, (posX, posY))
-                lose()
+                false_flag()
             elif (board[row][col]) == 0 and isChecked[row][col] == 0:
                 isFlagged[row][col] = 2
                 isChecked[row][col] = 1
@@ -570,7 +585,7 @@ def clear_empty(col,row):
 
 
 
-def drawFlag(col, row):
+def draw_flag(col, row):
     global MCR
     posX = (col) * TW
     posY = (row) * TH
@@ -615,7 +630,7 @@ def user_click(button):
                 if button == 1:
                     check_mine(col,row)
                 elif button == 3:
-                    drawFlag(col,row)
+                    draw_flag(col,row)
         except:
             pass
  
