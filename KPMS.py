@@ -124,19 +124,19 @@ def menu_screen():
                 pg.display.update()
              
         if easy:
-            boardX=24
-            boardY=16
-            mineCount=45
+            boardX=18
+            boardY=12
+            mineCount=20
             mode='Easy'
         elif mid:
-            boardX=33
-            boardY=22
-            mineCount=110
+            boardX=21
+            boardY=14
+            mineCount=32
             mode='Medium'
         elif hard:
-            boardX=42
-            boardY=28
-            mineCount=200
+            boardX=24
+            boardY=16
+            mineCount=48
             mode='Advanced'
             
         pg.display.update()
